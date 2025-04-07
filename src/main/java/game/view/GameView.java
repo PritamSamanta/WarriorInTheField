@@ -21,9 +21,14 @@ public class GameView {
         System.out.println("Time Slot: " + model.getTimeSlot());
         System.out.println("Warrior Health: " + model.getWarrior().getHealth());
         System.out.println("Enemy #" + model.getCurrentEnemyNumber() + " Health: " + model.getCurrentEnemy().getHealth());
+        System.out.println("Next radiation damage in: " +
+                ((model.getRadiationInterval() - (model.getTimeSlot() % model.getRadiationInterval())) %
+                        model.getRadiationInterval() == 0 ? model.getRadiationInterval() :
+                        (model.getRadiationInterval() - (model.getTimeSlot() % model.getRadiationInterval()))) +
+                " turns");
 
-        // Display available attacks
-        displayAvailableAttacks(model.getSkillManager().getAvailableSkills());
+        // Display available actions
+        displayAvailableActions(model.getSkillManager().getAvailableSkills());
 
         // Display enemy frozen status
         if (model.getCurrentEnemy().isFrozen()) {
@@ -33,8 +38,8 @@ public class GameView {
         System.out.println("----------------------------------");
     }
 
-    public void displayAvailableAttacks(List<AttackSkill> availableSkills) {
-        System.out.print("Available attacks: ");
+    public void displayAvailableActions(List<AttackSkill> availableSkills) {
+        System.out.print("Available actions: ");
         if (availableSkills.isEmpty()) {
             System.out.print("None!");
         } else {
@@ -45,12 +50,8 @@ public class GameView {
         System.out.println();
     }
 
-    public void promptAction() {
-        System.out.print("Will you attack (a) or defend (d)? ");
-    }
-
-    public void promptAttackType(List<AttackSkill> availableSkills) {
-        System.out.print("Choose your attack: ");
+    public void promptActionType(List<AttackSkill> availableSkills) {
+        System.out.print("Choose your action: ");
         for (AttackSkill skill : availableSkills) {
             System.out.print(skill.getName() + " (" + skill.getInputKey() + ") ");
         }
@@ -61,61 +62,61 @@ public class GameView {
         System.out.println("Invalid input. Please try again.");
     }
 
-    public void displayInvalidActionInput() {
-        System.out.println("Invalid input. Please enter 'a' for attack or 'd' for defend.");
-    }
-
-    public void displayInvalidAttackType() {
-        System.out.println("Invalid attack type. Please try again.");
+    public void displayInvalidActionType() {
+        System.out.println("Invalid action type. Please try again.");
     }
 
     public void displaySkillOnCooldown(String skillName, int cooldown) {
-        System.out.println(skillName + " attack is on cooldown for " + cooldown + " more turn(s)!");
+        System.out.println(skillName + " is on cooldown for " + cooldown + " more turn(s)!");
     }
 
-    public void displayDefend() {
-        System.out.println("You take a defensive stance!");
+    public void displayBlockAction(int blockPercentage) {
+        System.out.println("You take a defensive stance, ready to block " + blockPercentage + "% of incoming damage!");
     }
 
-    public void displayAttackExecution(String skillName, char attackType) {
-        switch (attackType) {
-            case 'f':
-                System.out.println("You cast a freezing spell on the enemy!");
-                break;
-            case 's':
-                System.out.println("You shoot the enemy, dealing 30 damage!");
-                break;
-            case 'm':
-                System.out.println("You cast a magic spell!");
-                break;
-            default:
-                System.out.println("You use " + skillName + "!");
-        }
+    public void displayHealAction(int healAmount) {
+        System.out.println("You use a healing potion, restoring " + healAmount + " health!");
     }
 
-    public void displayMagicDamage(int damage, int remainingHealth) {
-        System.out.println("Your magic spell deals " + damage + " damage! Enemy health reduced to " +
-                remainingHealth + ".");
+    public void displayShootAction(int damage) {
+        System.out.println("You shoot the enemy, dealing " + damage + " damage!");
+    }
+
+    public void displayMagicAction(int damage) {
+        System.out.println("Your magic spell deals " + damage + " damage!");
+    }
+
+    public void displayFreezeAction() {
+        System.out.println("You cast a freezing spell on the enemy!");
+    }
+
+    public void displayInvisibleAction() {
+        System.out.println("You activate your invisibility cloak and disappear from sight!");
+    }
+
+    public void displayRadiationDamage(int damage) {
+        System.out.println("You take " + damage + " radiation damage!");
     }
 
     public void displayEnemyFrozen() {
         System.out.println("The enemy is frozen and cannot attack!");
     }
 
-    public void displayBlockedAttack() {
-        System.out.println("You successfully block the enemy's attack!");
+    public void displayInvisibleFromEnemy() {
+        System.out.println("The enemy cannot see you and misses their attack!");
     }
 
-    public void displayEnemyAttack() {
-        System.out.println("The enemy attacks you, dealing 20 damage!");
+    public void displayPartialBlockedAttack(int originalDamage, int blockPercentage, int reducedDamage) {
+        System.out.println("The enemy attacks for " + originalDamage + " damage, but you block " +
+                blockPercentage + "% and only take " + reducedDamage + " damage!");
+    }
+
+    public void displayEnemyAttack(int damage) {
+        System.out.println("The enemy attacks you, dealing " + damage + " damage!");
     }
 
     public void displayEnemyDefeated(int enemyNumber) {
         System.out.println("You defeated Enemy #" + enemyNumber + "!");
-    }
-
-    public void displayHealthBoost(int newHealth) {
-        System.out.println("You gained 30 health! Current health: " + newHealth);
     }
 
     public void displayNewEnemy(Enemy enemy) {

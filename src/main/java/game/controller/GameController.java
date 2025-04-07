@@ -3,7 +3,6 @@ package main.java.game.controller;
 import main.java.game.model.*;
 import main.java.game.model.skill.*;
 import main.java.game.view.GameView;
-import main.java.game.constants.GameConstants;
 
 public class GameController {
     private GameModel model;
@@ -36,7 +35,6 @@ public class GameController {
             if (model.isEnemyDefeated()) {
                 view.displayEnemyDefeated(model.getCurrentEnemy().getEnemyNumber());
                 model.handleEnemyDefeat();
-                view.displayHealthBoost(model.getWarrior().getHealth());
                 view.displayNewEnemy(model.getCurrentEnemy());
             }
 
@@ -50,49 +48,64 @@ public class GameController {
 
     private void processTimeSlot() {
         // Check for radiation damage
-        model.processRadiationDamage();
+        int radiationDamage = model.processRadiationDamage();
+        if (radiationDamage > 0) {
+            view.displayRadiationDamage(radiationDamage);
+        }
 
         // Get warrior's action
-        char action = inputHandler.getWarriorAction(view);
+        char action = inputHandler.getActionType(view, model.getSkillManager());
 
-        // Process action
-        if (action == GameConstants.DEFEND_INPUT) {
-            // Defend
-            model.getWarrior().setDefending(true);
-            view.displayDefend();
-        } else if (action == GameConstants.ATTACK_INPUT) {
-            // Attack - choose attack type
-            char attackType = inputHandler.getAttackType(view, model.getSkillManager());
+        // Execute action
+        AttackSkill skill = model.getSkillManager().getSkill(action);
+        if (skill != null && skill.isAvailable()) {
+            int actionResult = -1;
 
-            // Execute attack
-            AttackSkill skill = model.getSkillManager().getSkill(attackType);
-            if (skill != null && skill.isAvailable()) {
-                view.displayAttackExecution(skill.getName(), attackType);
-
-                int enemyHealthBeforeAttack = getCurrentEnemyHealth();
-                model.executeAttack(attackType);
-
-                int enemyHealthAfterAttack = getCurrentEnemyHealth();
-                int damageDone = enemyHealthBeforeAttack - enemyHealthAfterAttack;
-                // Display additional information for magic attack
-                if (attackType == GameConstants.MAGIC_INPUT) {
-                    view.displayMagicDamage(damageDone,enemyHealthAfterAttack);
-                }
+            // Execute the action and store the result
+            switch (action) {
+                case 'b': // Block
+                    actionResult = model.executeAction(action);
+                    view.displayBlockAction(actionResult);
+                    break;
+                case 'h': // Heal
+                    actionResult = model.executeAction(action);
+                    view.displayHealAction(actionResult);
+                    break;
+                case 's': // Shoot
+                    actionResult = model.executeAction(action);
+                    view.displayShootAction(actionResult);
+                    break;
+                case 'm': // Magic
+                    actionResult = model.executeAction(action);
+                    view.displayMagicAction(actionResult);
+                    break;
+                case 'f': // Freeze
+                    model.executeAction(action);
+                    view.displayFreezeAction();
+                    break;
+                case 'i': // Invisible
+                    model.executeAction(action);
+                    view.displayInvisibleAction();
+                    break;
             }
         }
 
         // Enemy's turn
         if (model.getCurrentEnemy().isFrozen()) {
             view.displayEnemyFrozen();
-        } else if (model.getWarrior().isDefending()) {
-            view.displayBlockedAttack();
+        } else if (model.getWarrior().isInvisible()) {
+            view.displayInvisibleFromEnemy();
         } else {
-            model.processEnemyAttack();
-            view.displayEnemyAttack();
-        }
-    }
+            int[] attackResult = model.processEnemyAttack();
+            int originalDamage = attackResult[0];
+            int blockPercentage = attackResult[1];
+            int reducedDamage = attackResult[2];
 
-    private int getCurrentEnemyHealth() {
-        return model.getCurrentEnemy().getHealth();
+            if (model.getWarrior().isBlocking()) {
+                view.displayPartialBlockedAttack(originalDamage, blockPercentage, reducedDamage);
+            } else {
+                view.displayEnemyAttack(originalDamage);
+            }
+        }
     }
 }

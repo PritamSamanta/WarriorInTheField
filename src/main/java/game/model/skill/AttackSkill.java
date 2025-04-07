@@ -15,7 +15,7 @@ public abstract class AttackSkill {
         this.cooldown = 0;
     }
 
-    public abstract void execute(Warrior warrior, Enemy enemy);
+    public abstract int execute(Warrior warrior, Enemy enemy);
 
     public boolean isAvailable() {
         return cooldown == 0;
