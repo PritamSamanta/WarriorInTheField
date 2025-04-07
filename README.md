@@ -45,24 +45,22 @@ When choosing to attack (press 'a'), you have three special abilities:
 
 ### Installation
 1. Make sure you have Java installed on your system
-2. Save the game code to a file named `WarriorInTheField.java`
-3. Open a terminal/command prompt and navigate to the directory containing the file
-4. Compile the code:
+2. Compile the code:
    ```
-   javac WarriorInTheField.java
+   javac -d out src/main/java/game/*.java src/main/java/game/*/*.java
    ```
-5. Run the game:
+3. Run the game:
    ```
-   java WarriorInTheField
+   java -cp out game.WarriorInTheFieldGame
    ```
 
 ### Controls
 - At each time slot, you'll be prompted to choose your action
 - Press 'a' to attack or 'd' to defend
 - If attacking, you'll be prompted to choose one of your available attacks:
-  - 'f' for Freeze
-  - 's' for Shoot
-  - 'm' for Magic
+    - 'f' for Freeze
+    - 's' for Shoot
+    - 'm' for Magic
 
 ### Tips
 - Balance between attacking and defending
@@ -71,8 +69,58 @@ When choosing to attack (press 'a'), you have three special abilities:
 - Remember that radiation damage occurs every 5 turns
 - Try to defeat enemies quickly to replenish your health
 
-## Game Development
-This game was created as a simple Java project to demonstrate basic game mechanics and command-line interaction. Feel free to modify and expand upon the game!
+## Project Structure
+
+The project is organized using a modular architecture following MVC pattern and SOLID principles:
+
+### Packages
+- **game** - Main package
+    - **constants** - Game constants and configuration
+    - **controller** - Input handling and game flow control
+    - **model** - Game state and business logic
+        - **entity** - Game characters (Warrior, Enemy)
+        - **skill** - Attack abilities implementation
+    - **util** - Utility classes
+    - **view** - User interface and display
+
+### Design Patterns
+The code implements several design patterns to ensure maintainability and extensibility:
+
+1. **MVC (Model-View-Controller)**
+    - **Model**: Manages game state and logic
+    - **View**: Handles display and user interface
+    - **Controller**: Controls game flow and processes input
+
+2. **Strategy Pattern**
+    - Different attack skills implement a common interface
+    - Easy to add new skills without modifying existing code
+
+3. **Factory Pattern**
+    - Used for skill creation and management
+
+4. **Singleton Pattern**
+    - For utility classes like RandomGenerator
+
+## Extending the Game
+
+The refactored architecture makes it easy to extend the game with new features:
+
+### Adding New Skills
+1. Create a new class that extends `AttackSkill`
+2. Implement the `execute` method
+3. Add the skill to the `SkillManager` in the `GameModel` constructor
+
+### Adding New Enemy Types
+1. Create a subclass of `Enemy`
+2. Override methods to implement special behavior
+3. Modify the `spawnNewEnemy` method in `GameModel` to create different enemy types
+
+### Adding New Game Mechanics
+The modular design allows for easy integration of new mechanics such as:
+- Different environments with unique effects
+- Items and power-ups
+- Special events during gameplay
+- Multiple levels with increasing difficulty
 
 ## License
 This game is provided as open-source software and may be modified and distributed freely.
