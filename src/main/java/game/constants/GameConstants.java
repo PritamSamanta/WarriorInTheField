@@ -10,26 +10,34 @@ public class GameConstants {
     public static final int MAX_ENEMY_HEALTH = 99;
 
     // Damage values
-    public static final int ENEMY_ATTACK_DAMAGE = 20;
-    public static final int RADIATION_DAMAGE = 10;
-    public static final int SHOOT_DAMAGE = 30;
-    public static final int HEALTH_BOOST_AFTER_KILL = 30;
+    public static final int MIN_ENEMY_ATTACK_DAMAGE = 5;
+    public static final int MAX_ENEMY_ATTACK_DAMAGE = 30;
+    public static final int MIN_RADIATION_DAMAGE = 2;
+    public static final int MAX_RADIATION_DAMAGE = 20;
+    public static final int MIN_SHOOT_DAMAGE = 5;
+    public static final int MAX_SHOOT_DAMAGE = 40;
+    public static final int MIN_HEAL_AMOUNT = 5;
+    public static final int MAX_HEAL_AMOUNT = 40;
+    public static final int MIN_BLOCK_PERCENTAGE = 30;
+    public static final int MAX_BLOCK_PERCENTAGE = 100;
 
     // Time slot constants
-    public static final int RADIATION_INTERVAL = 5;
+    public static final int MIN_RADIATION_INTERVAL = 4;
+    public static final int MAX_RADIATION_INTERVAL = 9;
 
     // Attack cooldowns
-    public static final int ATTACK_COOLDOWN_TURNS = 2;
+    public static final int ACTION_COOLDOWN_TURNS = 2;
 
     // Status effect durations
     public static final int FREEZE_DURATION = 2;
 
     // Input characters
-    public static final char ATTACK_INPUT = 'a';
-    public static final char DEFEND_INPUT = 'd';
     public static final char FREEZE_INPUT = 'f';
     public static final char SHOOT_INPUT = 's';
     public static final char MAGIC_INPUT = 'm';
+    public static final char BLOCK_INPUT = 'b';
+    public static final char HEAL_INPUT = 'h';
+    public static final char INVISIBLE_INPUT = 'i';
 
     private GameConstants() {
         // Prevent instantiation
