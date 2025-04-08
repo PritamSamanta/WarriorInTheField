@@ -26,16 +26,16 @@ public class GameController {
             // Process time slot
             processTimeSlot();
 
-            // Check if game is over
-            if (model.isGameOver()) {
-                break;
-            }
-
             // Check if enemy is defeated
             if (model.isEnemyDefeated()) {
                 view.displayEnemyDefeated(model.getCurrentEnemy().getEnemyNumber());
                 model.handleEnemyDefeat();
                 view.displayNewEnemy(model.getCurrentEnemy());
+            }
+
+            // Check if game is over
+            if (model.isGameOver()) {
+                break;
             }
 
             // Increase time slot
@@ -64,8 +64,8 @@ public class GameController {
             // Execute the action and store the result
             switch (action) {
                 case 'b': // Block
-                    actionResult = model.executeAction(action);
-                    view.displayBlockAction(actionResult);
+                    model.executeAction(action);
+                    view.displayBlockAction();
                     break;
                 case 'h': // Heal
                     actionResult = model.executeAction(action);

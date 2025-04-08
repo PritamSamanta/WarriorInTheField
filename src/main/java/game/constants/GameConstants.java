@@ -15,18 +15,18 @@ public class GameConstants {
     public static final int MIN_RADIATION_DAMAGE = 2;
     public static final int MAX_RADIATION_DAMAGE = 20;
     public static final int MIN_SHOOT_DAMAGE = 5;
-    public static final int MAX_SHOOT_DAMAGE = 40;
+    public static final int MAX_SHOOT_DAMAGE = 45;
     public static final int MIN_HEAL_AMOUNT = 5;
-    public static final int MAX_HEAL_AMOUNT = 40;
-    public static final int MIN_BLOCK_PERCENTAGE = 30;
+    public static final int MAX_HEAL_AMOUNT = 60;
+    public static final int MIN_BLOCK_PERCENTAGE = 5;
     public static final int MAX_BLOCK_PERCENTAGE = 100;
 
     // Time slot constants
-    public static final int MIN_RADIATION_INTERVAL = 4;
+    public static final int MIN_RADIATION_INTERVAL = 3;
     public static final int MAX_RADIATION_INTERVAL = 9;
 
     // Attack cooldowns
-    public static final int ACTION_COOLDOWN_TURNS = 2;
+    public static final int ACTION_COOLDOWN_TURNS = 3;
 
     // Status effect durations
     public static final int FREEZE_DURATION = 2;

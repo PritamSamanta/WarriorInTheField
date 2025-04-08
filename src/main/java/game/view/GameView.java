@@ -70,8 +70,8 @@ public class GameView {
         System.out.println(skillName + " is on cooldown for " + cooldown + " more turn(s)!");
     }
 
-    public void displayBlockAction(int blockPercentage) {
-        System.out.println("You take a defensive stance, ready to block " + blockPercentage + "% of incoming damage!");
+    public void displayBlockAction() {
+        System.out.println("You take a defensive stance, ready to block the incoming damage!");
     }
 
     public void displayHealAction(int healAmount) {
@@ -107,7 +107,7 @@ public class GameView {
     }
 
     public void displayPartialBlockedAttack(int originalDamage, int blockPercentage, int reducedDamage) {
-        System.out.println("The enemy attacks for " + originalDamage + " damage, but you block " +
+        System.out.println("The enemy attacks with " + originalDamage + " damage, but you were able to block " +
                 blockPercentage + "% and only take " + reducedDamage + " damage!");
     }
 
